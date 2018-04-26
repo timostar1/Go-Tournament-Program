@@ -68,6 +68,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Model\Game.cs" />
+    <Compile Include="Model\ITournament.cs" />
+    <Compile Include="Model\Judge.cs" />
+    <Compile Include="Model\Person.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\PlayerTournamentSettings.cs" />
+    <Compile Include="Model\Sortitions.cs" />
+    <Compile Include="Model\Tournament.cs" />
+    <Compile Include="Model\TournamentSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
