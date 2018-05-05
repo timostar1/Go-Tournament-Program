@@ -55,11 +55,11 @@ namespace GoTournamentProgram.Model
                     int p2 = circleDict[pair[1]];
                     if (p1 == -1)
                     {
-                        players[p2 - 1].AddGameResult(round);
+                        //players[p2 - 1].AddGameResult(round);
                     }
                     else if (p2 == -1)
                     {
-                        players[p1 - 1].AddGameResult(round);
+                        //players[p1 - 1].AddGameResult(round);
                     }
                     else
                     {

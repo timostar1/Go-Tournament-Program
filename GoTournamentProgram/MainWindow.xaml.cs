@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GoTournamentProgram.View;
+using Microsoft.Win32;
 
 namespace GoTournamentProgram
 {
@@ -23,6 +25,15 @@ namespace GoTournamentProgram
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog myDialog = new OpenFileDialog();
+            myDialog.ShowDialog();
+            //Game game = new Game();
+            //game.Owner = this;
+            //game.Show();
         }
     }
 }

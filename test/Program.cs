@@ -33,16 +33,16 @@ namespace test
 
         static void TestGame()
         {
-            Game game = new Game();
-            Console.WriteLine(game);
-            game.OpponentId = -1;
-            Console.WriteLine(game);
-            game.Result = Game.GameResult.Win;
-            Console.WriteLine(game);
-            game.OpponentId = 2;
-            Console.WriteLine(game);
-            game.Result = Game.GameResult.NotFinished;
-            Console.WriteLine(game);
+        //    Game game = new Game();
+        //    Console.WriteLine(game);
+        //    game.OpponentId = -1;
+        //    Console.WriteLine(game);
+        //    game.Result = Game.GameResult.Win;
+        //    Console.WriteLine(game);
+        //    game.OpponentId = 2;
+        //    Console.WriteLine(game);
+        //    game.Result = Game.GameResult.NotFinished;
+        //    Console.WriteLine(game);
         }
         static void Main(string[] args)
         {

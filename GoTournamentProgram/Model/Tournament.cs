@@ -8,6 +8,12 @@ namespace GoTournamentProgram.Model
 {
     public class Tournament : ITournament
     {
+        public List<Player> Players { get; set; }
+        public string Name { get; set; }
+        public int CurrentTour { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public TournamentSettings Settings { get; set; }
         //public delegate bool PlayersComparer(Player p);
         //public PlayersComparer ComparePlayerId = delegate (Player p) { return p.TournamentSettings.Id == playerId; }
         public Tournament()
@@ -32,13 +38,6 @@ namespace GoTournamentProgram.Model
             }
         }
 
-        public List<Player> Players { get; set; }
-        public string Name { get; set; }
-        public int CurrentTour { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-        public TournamentSettings Settings { get; set; }
-
         public void NextTour()
         {
             // TODO
@@ -48,7 +47,7 @@ namespace GoTournamentProgram.Model
         {
             for (int i = 1; i <= this.CurrentTour; i++)
             {
-                player.AddGameResult(i);
+                //player.AddGameResult(i);
             }
         }
 

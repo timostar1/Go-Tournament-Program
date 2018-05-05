@@ -5,16 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoTournamentProgram"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Go Tournaments" Height="350" Width="525"
+		Icon="/Resources/header.ico">
+	<Window.DataContext>
+		<local:GoTournamentsVM/>
+	</Window.DataContext>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition></RowDefinition>
 		</Grid.RowDefinitions>
-		<Menu>
+		<Menu Grid.Row="0">
 			<MenuItem Header="File">
-				<MenuItem Header="New"></MenuItem>
-				<MenuItem Header="Open"></MenuItem>
+				<MenuItem Header="New" Command="{Binding AddUser}"></MenuItem>
+				<MenuItem Header="Open" Click="MenuItem_Click"></MenuItem>
 				<MenuItem Header="Save"></MenuItem>
 				<MenuItem Header="SaveAs..."></MenuItem>
 				<Separator></Separator>
@@ -29,5 +33,46 @@
 				<MenuItem Header="Paste"></MenuItem>
 			</MenuItem>
 		</Menu>
+		<!--<TabControl Name="TabTournaments" Grid.Row="1">
+			--><!--<TabItem Header="Tab 1">a</TabItem>
+			<TabItem Header="Tab 2">b</TabItem>--><!--
+		</TabControl>-->
+		<DockPanel Grid.Row="2">
+			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+				<Button Content="AddUser" Margin="5" Command="{Binding AddUser}"/>
+				<Button Content="Save" Margin="5" Command="{Binding Save}"/>
+				<Button Content="Open" Margin="5" Command="{Binding Open}"/>
+				<Button Content="Delete" Margin="5" Command="{Binding Delete}"
+				CommandParameter="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
+				<TextBox Text="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
+			</StackPanel>
+			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Users}" AutoGenerateColumns="False"
+					  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+					<DataGridTextColumn Header="City" Binding="{Binding City}"/>
+
+					<DataGridTemplateColumn Header="Games" Width="auto">
+						<DataGridTemplateColumn.CellTemplate>
+							<ItemContainerTemplate>
+								<DataGrid ItemsSource="{Binding Games}" BorderBrush="White" GridLinesVisibility="Vertical"
+										  HeadersVisibility="None" VerticalScrollBarVisibility="Disabled" 
+										  HorizontalScrollBarVisibility="Disabled" IsReadOnly="False" AutoGenerateColumns="False">
+									<DataGrid.Columns>
+										<DataGridTextColumn Binding="{Binding Opponent}" IsReadOnly="False"></DataGridTextColumn>
+										<DataGridTextColumn Binding="{Binding Result}"></DataGridTextColumn>
+									</DataGrid.Columns>
+									<DataGrid.ItemsPanel>
+										<ItemsPanelTemplate>
+											<WrapPanel Orientation="Horizontal"/>
+										</ItemsPanelTemplate>
+									</DataGrid.ItemsPanel>
+								</DataGrid>
+							</ItemContainerTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+		</DockPanel>
 	</Grid>
 </Window>

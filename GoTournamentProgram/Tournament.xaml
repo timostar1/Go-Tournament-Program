@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="GoTournamentProgram.View.Tournament"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GoTournamentProgram.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+	<UserControl.Resources>
+		<local:Test x:Key="testUser" Age="19" Name="Tim"/>
+	</UserControl.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"></RowDefinition>
+			<RowDefinition></RowDefinition>
+		</Grid.RowDefinitions>
+		<Menu Grid.Row="0">
+			<MenuItem Header="Add player"></MenuItem>
+			<MenuItem Header="Next round"></MenuItem>
+			<MenuItem Header="Settings"></MenuItem>
+		</Menu>
+		<Grid Grid.Row="1" Name="gridTestDetails">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition></ColumnDefinition>
+				<ColumnDefinition></ColumnDefinition>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition></RowDefinition>
+				<RowDefinition></RowDefinition>
+			</Grid.RowDefinitions>
+			<!--<TextBlock x:Name="nameTextBlock" Grid.Column="0" Text="{Binding Source={StaticResource testUser}, Path=Name}"/>
+			<TextBlock x:Name="ageTextBlock" Grid.Column="1" Text="{Binding Source={StaticResource testUser}, Path=Age}"/>
+			<Button Grid.Row="1" Click="Button_Click">Change</Button>-->
+			<DataGrid DataContext="{Binding Source={}}">
+				
+			</DataGrid>
+		</Grid>
+    </Grid>
+</UserControl>
