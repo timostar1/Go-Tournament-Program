@@ -17,12 +17,12 @@
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0">
 			<MenuItem Header="File">
-				<MenuItem Header="New" Command="{Binding AddUser}"></MenuItem>
-				<MenuItem Header="Open" Click="MenuItem_Click"></MenuItem>
-				<MenuItem Header="Save"></MenuItem>
-				<MenuItem Header="SaveAs..."></MenuItem>
+				<MenuItem Name="NewMenuItem" Header="New" Command="{Binding AddUser}"></MenuItem>
+				<MenuItem Name="OpenMenuItem" Header="Open" Click="MenuItem_Click"></MenuItem>
+				<MenuItem Name="SaveMenuItem" Header="Save"></MenuItem>
+				<MenuItem Name="SaveAsMenuItem" Header="SaveAs..."></MenuItem>
 				<Separator></Separator>
-				<MenuItem Header="Exit"></MenuItem>
+				<MenuItem Name="ExitMenuItem" Header="Exit"></MenuItem>
 			</MenuItem>
 			<MenuItem Header="Edit">
 				<MenuItem Header="Undo"></MenuItem>
@@ -51,7 +51,8 @@
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
 					<DataGridTextColumn Header="City" Binding="{Binding City}"/>
-
+					<DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
+					
 					<DataGridTemplateColumn Header="Games" Width="auto">
 						<DataGridTemplateColumn.CellTemplate>
 							<ItemContainerTemplate>
@@ -71,6 +72,9 @@
 							</ItemContainerTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
+
+					<!--<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>
+					<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>-->
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>

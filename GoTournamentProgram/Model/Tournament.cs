@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace GoTournamentProgram.Model
 {
-    public class Tournament : ITournament
+    public class Tournament: ITournament, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Реализация интерфейса INotifyPropertyChanged
+        /// </summary>
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName]string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
         public List<Player> Players { get; set; }
         public string Name { get; set; }
         public int CurrentTour { get; set; }

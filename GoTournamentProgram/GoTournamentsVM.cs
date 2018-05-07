@@ -12,36 +12,13 @@ using System.ComponentModel;
 
 namespace GoTournamentProgram
 {
-    class GoTournamentsVM: BindableBase, INotifyPropertyChanged
+    class GoTournamentsVM: BindableBase
     {
         readonly GoTournamentsModel _model = new GoTournamentsModel();
 
 
-        private Player currentPlayer;
-        public Player CurrentPlayer
-        {
-            get { return this.currentPlayer; }
-            set
-            {
-                this.currentPlayer = value;
-                RaisePropertyChanged("CurrentPlayer"); 
-            }
-        }
-
-        private string testString;
-        public string TestString
-        {
-            get { return this.testString; }
-            set
-            {
-                this.testString = value;
-                RaisePropertyChanged("TestString");
-            }
-        }
         public GoTournamentsVM()
         {
-            CurrentPlayer = null;
-            TestString = "xxx";
             //
             AddUser = new DelegateCommand(_model.AddUser);
             Save = new DelegateCommand(_model.Save);

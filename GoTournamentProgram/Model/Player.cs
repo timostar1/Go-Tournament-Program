@@ -86,8 +86,78 @@ namespace GoTournamentProgram.Model
             }
         }
 
+        /// <summary>
+        /// Очки макмагона
+        /// </summary>
+        private int mmr;
+        /// <summary>
+        /// Получает или задает очки макмагона участника турнира
+        /// </summary>
+        [DataMember]
+        public int MMR
+        {
+            get { return this.mmr; }
+            set
+            {
+                this.mmr = value;
+                OnPropertyChanged("MMR");
+            }
+        }
 
-        //public PlayerTournamentSettings TournamentSettings { get; set; }
+        /// <summary>
+        /// Количество побед + очки макмагона
+        /// </summary>
+        private int points;
+        /// <summary>
+        /// Получает или задает турнирные очки участника турнира
+        /// </summary>
+        [DataMember]
+        public int Points
+        {
+            get { return this.points; }
+            set
+            {
+                this.points = value;
+                OnPropertyChanged("Points");
+            }
+        }
+
+        /// <summary>
+        /// Сумма очков всех соперников
+        /// </summary>
+        private int buhgolz;
+        /// <summary>
+        /// Получает или задает сумму очков всех соперников участника турнира
+        /// </summary>
+        [DataMember]
+        public int Buhgolz
+        {
+            get { return this.buhgolz; }
+            set
+            {
+                this.buhgolz = value;
+                OnPropertyChanged("Buhgolz");
+            }
+        }
+
+        /// <summary>
+        /// Сумма очков противников, у которых участник выиграл + 
+        /// 1/2 суммы очков противников, с которыми сыграл вничью
+        /// </summary>
+        private int berger;
+        /// <summary>
+        /// Получает или задает коэффициент Бергера участника турнира
+        /// </summary>
+        [DataMember]
+        public int Berger
+        {
+            get { return this.berger; }
+            set
+            {
+                this.berger = value;
+                OnPropertyChanged("Berger");
+            }
+        }
 
         /// <summary>
         /// Словарь (Номер тура: Объект игры)
@@ -104,7 +174,14 @@ namespace GoTournamentProgram.Model
             this.Rating = 0;
             this.Name = "-";
             this.Surname = "-";
-            //this.TournamentSettings = new PlayerTournamentSettings();
+
+            // TournamentSettings:
+            this.Points = 0;
+            this.MMR = 0;
+            this.Buhgolz = 0;
+            this.Berger = 0;
+
+            //
             this.games.Add(new Game(1));
             this.games.Add(new Game(2));
             this.games.Add(new Game(3));

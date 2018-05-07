@@ -30,10 +30,16 @@ namespace GoTournamentProgram
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog myDialog = new OpenFileDialog();
+            myDialog.FileOk += MyDialog_FileOk;
             myDialog.ShowDialog();
             //Game game = new Game();
             //game.Owner = this;
             //game.Show();
+        }
+
+        private void MyDialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }
