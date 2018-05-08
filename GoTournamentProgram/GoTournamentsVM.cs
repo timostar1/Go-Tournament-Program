@@ -14,25 +14,20 @@ namespace GoTournamentProgram
 {
     class GoTournamentsVM: BindableBase
     {
-        readonly GoTournamentsModel _model = new GoTournamentsModel();
-
+        //readonly GoTournamentsModel _model = new GoTournamentsModel();
+        private readonly ObservableCollection<TournamentVM> tournaments = new ObservableCollection<TournamentVM>();
+        //public Dictionary<string, TournamentVM> Tournaments;
 
         public GoTournamentsVM()
         {
-            //
-            AddUser = new DelegateCommand(_model.AddUser);
-            Save = new DelegateCommand(_model.Save);
-            Open = new DelegateCommand(_model.Open);
-            Delete = new DelegateCommand<int?>(i => 
-            {
-                if (i.HasValue) _model.Delete(i.Value);
-            });
+            //tournaments.Add(new TournamentVM());
+            AddTournament = new DelegateCommand(_AddTournament);
         }
 
-        public DelegateCommand AddUser { get; }
-        public DelegateCommand Save { get; }
-        public DelegateCommand Open { get; }
-        public DelegateCommand<int?> Delete { get; }
-        public ReadOnlyObservableCollection<Player> Users => _model.Users;
+        private void _AddTournament()
+        {
+        }
+
+        public DelegateCommand AddTournament { get; }
     }
 }

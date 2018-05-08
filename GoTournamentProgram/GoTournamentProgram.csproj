@@ -67,15 +67,21 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\DefaultFileDialogService.cs" />
     <Compile Include="Game.xaml.cs">
       <DependentUpon>Game.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameVM.cs" />
     <Compile Include="GoTournamentsModel.cs" />
     <Compile Include="GoTournamentsVM.cs" />
+    <Compile Include="Services\IFileDialogService.cs" />
+    <Compile Include="Services\IFileService.cs" />
+    <Compile Include="Services\JsonFileService.cs" />
     <Compile Include="Tournament.xaml.cs">
       <DependentUpon>Tournament.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TournamentModel.cs" />
+    <Compile Include="TournamentVM.cs" />
     <Page Include="Game.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -103,7 +109,6 @@
     <Compile Include="Model\Judge.cs" />
     <Compile Include="Model\Person.cs" />
     <Compile Include="Model\Player.cs" />
-    <Compile Include="Model\PlayerTournamentSettings.cs" />
     <Compile Include="Model\Sortitions.cs" />
     <Compile Include="Model\Tournament.cs" />
     <Compile Include="Model\TournamentSettings.cs" />

@@ -20,57 +20,17 @@ namespace GoTournamentProgram
 {
     class GoTournamentsModel: BindableBase
     {
-        private readonly ObservableCollection<Player> _users = new ObservableCollection<Player>();
-        public readonly ReadOnlyObservableCollection<Player> Users;
-        public void AddUser()
-        {
-            Player p = new Player();
-            _users.Add(p);
-        }
-        public void Save()
-        {
-            List<Type> types = new List<Type>();
-            //types.Add(typeof(Game.GameResult));
-            //types.Add(typeof(Game));
-            //types.Add(typeof(Person));
-            //types.Add(typeof(Player));
-
-            // TODO: JSON сериализация Users
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ObservableCollection<Player>));
-
-            using (FileStream fs = new FileStream("plaers.json", FileMode.OpenOrCreate))
-            {
-                jsonFormatter.WriteObject(fs, _users);
-            }
-        }
-
-        public void Open()
-        {
-            DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(ObservableCollection<Player>));
-
-            using (FileStream fs = new FileStream("plaers.json", FileMode.OpenOrCreate))
-            {
-                ObservableCollection<Player> newpeople = (ObservableCollection<Player>)jsonFormatter.ReadObject(fs);
-
-                foreach (Player p in newpeople)
-                {
-                    _users.Add(p);
-                }
-            }
-        }
-
-        public void Delete(int index)
-        {
-            try
-            {
-                _users.RemoveAt(index);
-            }
-            catch { }
-        }
+        private readonly ObservableCollection<TournamentModel> _tournaments = new ObservableCollection<TournamentModel>();
+        public readonly ReadOnlyObservableCollection<TournamentModel> Tournaments;
 
         public GoTournamentsModel()
         {
-            Users = new ReadOnlyObservableCollection<Player>(_users);
+            Tournaments = new ReadOnlyObservableCollection<TournamentModel>(_tournaments);
+        }
+
+        public void AddTournament()
+        {
+            _tournaments.Add(new TournamentModel());
         }
     }
 }

@@ -5,11 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoTournamentProgram"
         mc:Ignorable="d"
-        Title="Go Tournaments" Height="350" Width="525"
+        Title="{Binding Name}" Height="350" Width="525"
 		Icon="/Resources/header.ico">
-	<Window.DataContext>
-		<local:GoTournamentsVM/>
-	</Window.DataContext>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="auto"></RowDefinition>
@@ -17,9 +14,9 @@
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0">
 			<MenuItem Header="File">
-				<MenuItem Name="NewMenuItem" Header="New" Command="{Binding AddUser}"></MenuItem>
-				<MenuItem Name="OpenMenuItem" Header="Open" Click="MenuItem_Click"></MenuItem>
-				<MenuItem Name="SaveMenuItem" Header="Save"></MenuItem>
+				<MenuItem Name="NewMenuItem" Header="New"></MenuItem>
+				<MenuItem Name="OpenMenuItem" Header="Open" Command="{Binding Open}"></MenuItem>
+				<MenuItem Name="SaveMenuItem" Header="Save" Command="{Binding Save}"></MenuItem>
 				<MenuItem Name="SaveAsMenuItem" Header="SaveAs..."></MenuItem>
 				<Separator></Separator>
 				<MenuItem Name="ExitMenuItem" Header="Exit"></MenuItem>
@@ -33,32 +30,44 @@
 				<MenuItem Header="Paste"></MenuItem>
 			</MenuItem>
 		</Menu>
-		<!--<TabControl Name="TabTournaments" Grid.Row="1">
-			--><!--<TabItem Header="Tab 1">a</TabItem>
-			<TabItem Header="Tab 2">b</TabItem>--><!--
+		
+		<!--<TabControl Name="TabTournaments" Grid.Row="1" ItemsSource="{Binding TestDict}">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<TextBlock Text="{Binding Key}"/>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+			<TabControl.ContentTemplate>
+				<DataTemplate>
+					
+				</DataTemplate>
+			</TabControl.ContentTemplate>
 		</TabControl>-->
+		
 		<DockPanel Grid.Row="2">
 			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-				<Button Content="AddUser" Margin="5" Command="{Binding AddUser}"/>
+				<Label Content="{Binding Name}"/>
+				<Button Content="Change Name" Margin="5" Command="{Binding ChangeName}"/>
+				<Button Content="Add User" Margin="5" Command="{Binding AddUser}"/>
 				<Button Content="Save" Margin="5" Command="{Binding Save}"/>
 				<Button Content="Open" Margin="5" Command="{Binding Open}"/>
 				<Button Content="Delete" Margin="5" Command="{Binding Delete}"
-				CommandParameter="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
+					CommandParameter="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
 				<TextBox Text="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
 			</StackPanel>
-			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Users}" AutoGenerateColumns="False"
-					  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}">
+			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Players}" AutoGenerateColumns="False"
+						  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
 					<DataGridTextColumn Header="City" Binding="{Binding City}"/>
 					<DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
-					
+
 					<DataGridTemplateColumn Header="Games" Width="auto">
 						<DataGridTemplateColumn.CellTemplate>
 							<ItemContainerTemplate>
 								<DataGrid ItemsSource="{Binding Games}" BorderBrush="White" GridLinesVisibility="Vertical"
-										  HeadersVisibility="None" VerticalScrollBarVisibility="Disabled" 
-										  HorizontalScrollBarVisibility="Disabled" IsReadOnly="False" AutoGenerateColumns="False">
+											  HeadersVisibility="None" VerticalScrollBarVisibility="Disabled" 
+											  HorizontalScrollBarVisibility="Disabled" IsReadOnly="False" AutoGenerateColumns="False">
 									<DataGrid.Columns>
 										<DataGridTextColumn Binding="{Binding Opponent}" IsReadOnly="False"></DataGridTextColumn>
 										<DataGridTextColumn Binding="{Binding Result}"></DataGridTextColumn>
@@ -74,7 +83,7 @@
 					</DataGridTemplateColumn>
 
 					<!--<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>
-					<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>-->
+						<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>-->
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>
