@@ -11,6 +11,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using GoTournamentProgram.Services;
 
 namespace GoTournamentProgram
 {
@@ -24,18 +25,8 @@ namespace GoTournamentProgram
     }
 
     [DataContract]
-    public class TournamentModel: INotifyPropertyChanged
+    public class TournamentModel: Notifier
     {
-        /// <summary>
-        /// Реализация интерфейса INotifyPropertyChanged
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
-
         private readonly ObservableCollection<Player> players = new ObservableCollection<Player>();
         /// <summary>
         /// Список участников турнира
@@ -82,6 +73,15 @@ namespace GoTournamentProgram
             set
             {
                 this.system = value;
+                if (value != TournamentSystem.Circle)
+                {
+                    this.NumberOfTours.IsEnabled = true;
+                }
+                else
+                {
+                    this.NumberOfTours.Value = this.players.Count - 1;
+                    this.NumberOfTours.IsEnabled = false;
+                }
                 OnPropertyChanged("System");
             }
         }
@@ -145,6 +145,24 @@ namespace GoTournamentProgram
             }
         }
 
+        /// <summary>
+        /// Количество туров втурнире
+        /// </summary>
+        private TournamentSetting<int> numberOfTours;
+        /// <summary>
+        /// Получает или задает количество туров в турнире
+        /// </summary>
+        [DataMember]  // not tested
+        public TournamentSetting<int> NumberOfTours
+        {
+            get { return this.numberOfTours; }
+            set
+            {
+                this.numberOfTours = value;
+                OnPropertyChanged("NumberOfTours");
+            }
+        }
+
         public TournamentModel()
         {
             Players = new ReadOnlyObservableCollection<Player>(players);
@@ -154,6 +172,7 @@ namespace GoTournamentProgram
             organizer = "Moscow Go Federation";
             startDate = DateTime.Now;
             endDate = DateTime.Now.AddDays(1);
+            numberOfTours = new TournamentSetting<int>(0, false);
         }
 
         public void Update(TournamentModel model)
@@ -171,7 +190,7 @@ namespace GoTournamentProgram
             EndDate = model.EndDate;
         }
 
-        public void AddUser()
+        public void AddPlayer()
         {
             Player p = new Player();
             players.Add(p);

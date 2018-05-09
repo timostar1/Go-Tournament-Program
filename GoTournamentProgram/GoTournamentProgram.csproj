@@ -77,10 +77,12 @@
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\JsonFileService.cs" />
+    <Compile Include="Services\Notifier.cs" />
     <Compile Include="Tournament.xaml.cs">
       <DependentUpon>Tournament.xaml</DependentUpon>
     </Compile>
     <Compile Include="TournamentModel.cs" />
+    <Compile Include="TournamentSetting.cs" />
     <Compile Include="TournamentVM.cs" />
     <Page Include="Game.xaml">
       <SubType>Designer</SubType>

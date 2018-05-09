@@ -42,6 +42,11 @@ namespace GoTournamentProgram
             }
         }
 
+        public TournamentSetting<int> NumberOfTours {
+            get =>_model.NumberOfTours;
+            set { _model.NumberOfTours = value; }
+        }
+
         public TournamentVM(IDialogService dialogService, IFileService fileService)
         {
             TestDict.Add("xxx", new Game(19));
@@ -53,7 +58,7 @@ namespace GoTournamentProgram
             //таким нехитрым способом мы пробрасываем изменившиеся свойства модели во View
             _model.PropertyChanged += (sender, e) => { RaisePropertyChanged(e.PropertyName); };
             //
-            AddUser = new DelegateCommand(_model.AddUser);
+            AddPlayer = new DelegateCommand(_model.AddPlayer);
             Save = new DelegateCommand(SaveCommand);
             Open = new DelegateCommand(OpenCommand);
             Delete = new DelegateCommand<int?>(i =>
@@ -63,7 +68,7 @@ namespace GoTournamentProgram
             RemoveAll = new DelegateCommand(_model.RemoveAll);
         }
 
-        public DelegateCommand AddUser { get; }
+        public DelegateCommand AddPlayer { get; }
         public DelegateCommand Save { get; }
         public DelegateCommand Open { get; }
         public DelegateCommand<int?> Delete { get; }

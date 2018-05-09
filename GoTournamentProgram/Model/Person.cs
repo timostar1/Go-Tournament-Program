@@ -6,22 +6,13 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using GoTournamentProgram.Services;
 
 namespace GoTournamentProgram.Model
 {
     [DataContract]
-    public class Person: INotifyPropertyChanged
+    public class Person: Notifier
     {
-        /// <summary>
-        /// Реализация интерфейса INotifyPropertyChanged
-        /// </summary>
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName]string prop = "")
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(prop));
-        }
-
         protected string name;
         [DataMember]
         public string Name
