@@ -16,20 +16,38 @@ namespace GoTournamentProgram
         public Dictionary<string, Game> TestDict = new Dictionary<string, Game>();
         //
 
-        private IFileDialogService fileDialogService;
+        private IDialogService dialogService;
         private IFileService fileService;
 
         readonly TournamentModel _model = new TournamentModel();
 
         public ReadOnlyObservableCollection<Player> Players => _model.Players;
-        public string Name => _model.Name;
+        public string Name { get => _model.Name; set { _model.Name = value; } }
+        public string Organizer { get => _model.Organizer; set { _model.Organizer = value; } }
+        public TournamentSystem System { get => _model.System; set { _model.System = value; } }
+        public DateTime StartDate { get => _model.StartDate; set { _model.StartDate = value; } }
+        public DateTime EndDate
+        {
+            get => _model.EndDate;
+            set
+            {
+                try
+                {
+                    _model.EndDate = value;
+                }
+                catch (ArgumentException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            }
+        }
 
-        public TournamentVM(IFileDialogService fileDialogService, IFileService fileService)
+        public TournamentVM(IDialogService dialogService, IFileService fileService)
         {
             TestDict.Add("xxx", new Game(19));
             //
 
-            this.fileDialogService = fileDialogService;
+            this.dialogService = dialogService;
             this.fileService = fileService;
 
             //таким нехитрым способом мы пробрасываем изменившиеся свойства модели во View
@@ -42,31 +60,29 @@ namespace GoTournamentProgram
             {
                 if (i.HasValue) _model.Delete(i.Value);
             });
-            //
-            ChangeName = new DelegateCommand(_model.ChangeName);
+            RemoveAll = new DelegateCommand(_model.RemoveAll);
         }
 
         public DelegateCommand AddUser { get; }
         public DelegateCommand Save { get; }
         public DelegateCommand Open { get; }
         public DelegateCommand<int?> Delete { get; }
-        //
-        public DelegateCommand ChangeName { get; }
+        public DelegateCommand RemoveAll { get; }
 
         private void OpenCommand()
         {
             try
             {
-                if (fileDialogService.OpenFileDialog() == true)
+                if (dialogService.OpenFileDialog() == true)
                 {
-                    TournamentModel newTournament = fileService.Open(fileDialogService.FilePath);
+                    TournamentModel newTournament = fileService.Open(dialogService.FilePath);
                     _model.Update(newTournament);
-                    fileDialogService.ShowMessage("Файл открыт");
+                    dialogService.ShowMessage("Файл открыт");
                 }
             }
             catch (Exception ex)
             {
-                fileDialogService.ShowMessage(ex.Message);
+                dialogService.ShowMessage(ex.Message);
             }
         }
 
@@ -74,15 +90,15 @@ namespace GoTournamentProgram
         {
             try
             {
-                if (fileDialogService.SaveFileDialog() == true)
+                if (dialogService.SaveFileDialog() == true)
                 {
-                    fileService.Save(fileDialogService.FilePath, _model);
-                    fileDialogService.ShowMessage("Файл сохранен");
+                    fileService.Save(dialogService.FilePath, _model);
+                    dialogService.ShowMessage("Файл сохранен");
                 }
             }
             catch (Exception ex)
             {
-                fileDialogService.ShowMessage(ex.Message);
+                dialogService.ShowMessage(ex.Message);
             }
         }
     }

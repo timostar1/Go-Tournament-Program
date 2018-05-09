@@ -67,14 +67,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Services\DefaultFileDialogService.cs" />
+    <Compile Include="Services\DefaultDialogService.cs" />
     <Compile Include="Game.xaml.cs">
       <DependentUpon>Game.xaml</DependentUpon>
     </Compile>
     <Compile Include="GameVM.cs" />
     <Compile Include="GoTournamentsModel.cs" />
     <Compile Include="GoTournamentsVM.cs" />
-    <Compile Include="Services\IFileDialogService.cs" />
+    <Compile Include="Services\IDialogService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\JsonFileService.cs" />
     <Compile Include="Tournament.xaml.cs">

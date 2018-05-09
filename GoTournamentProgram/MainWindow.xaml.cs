@@ -27,7 +27,7 @@ namespace GoTournamentProgram
         {
             InitializeComponent();
             this.DataContext =
-                new TournamentVM(new DefaultFileDialogService(), new JsonFileService());
+                new TournamentVM(new DefaultDialogService(), new JsonFileService());
         }
     }
 }

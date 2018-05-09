@@ -4,7 +4,7 @@ namespace GoTournamentProgram.Services
     /// <summary>
     /// Позволяет работать с диалоговыми окнами
     /// </summary>
-    public interface IFileDialogService
+    public interface IDialogService
     {
         // TODO: Изменить комментарии
         /// <summary>

@@ -4,11 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GoTournamentProgram"
+		xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="{Binding Name}" Height="350" Width="525"
-		Icon="/Resources/header.ico">
+		Icon="/Resources/header.ico"
+		BorderBrush="AliceBlue" BorderThickness="1">
+	<Window.Resources>
+		<ObjectDataProvider x:Key="tournamentSystemData" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="local:TournamentSystem"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+	</Window.Resources>
 	<Grid>
 		<Grid.RowDefinitions>
+			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition Height="auto"></RowDefinition>
 			<RowDefinition></RowDefinition>
 		</Grid.RowDefinitions>
@@ -43,20 +54,37 @@
 				</DataTemplate>
 			</TabControl.ContentTemplate>
 		</TabControl>-->
-		
+
+		<Expander Grid.Row="1" Header="Settings" Margin="5" BorderBrush="BlueViolet" BorderThickness="2">
+			<Grid Margin="20">
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition></ColumnDefinition>
+					<ColumnDefinition></ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<StackPanel>
+					<Label>Tournament name:</Label>
+					<TextBox Text="{Binding Name}"/>
+					<Label>Tournament system:</Label>
+					<ComboBox ItemsSource="{Binding Source={StaticResource tournamentSystemData}}"
+							  SelectedItem="{Binding System}"/>
+					<Label>Start date:</Label>
+					<DatePicker SelectedDate="{Binding StartDate}"/>
+					<Label>End date:</Label>
+					<DatePicker SelectedDate="{Binding EndDate}"/>
+				</StackPanel>
+			</Grid>
+		</Expander>
+
 		<DockPanel Grid.Row="2">
 			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-				<Label Content="{Binding Name}"/>
-				<Button Content="Change Name" Margin="5" Command="{Binding ChangeName}"/>
-				<Button Content="Add User" Margin="5" Command="{Binding AddUser}"/>
-				<Button Content="Save" Margin="5" Command="{Binding Save}"/>
-				<Button Content="Open" Margin="5" Command="{Binding Open}"/>
+				<Button Content="Add player" Margin="5" Command="{Binding AddUser}"/>
 				<Button Content="Delete" Margin="5" Command="{Binding Delete}"
 					CommandParameter="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
-				<TextBox Text="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
+				<Button Content="Remove all" Margin="5" Command="{Binding RemoveAll}"/>
 			</StackPanel>
+			
 			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Players}" AutoGenerateColumns="False"
-						  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}">
+						  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}" Margin="10 0 10 10">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
 					<DataGridTextColumn Header="City" Binding="{Binding City}"/>

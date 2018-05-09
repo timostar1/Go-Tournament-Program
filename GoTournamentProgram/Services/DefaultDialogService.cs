@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace GoTournamentProgram.Services
 {
-    public class DefaultFileDialogService : IFileDialogService
+    public class DefaultDialogService : IDialogService
     {
         public string FilePath { get; set; }
 
