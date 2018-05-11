@@ -12,7 +12,7 @@ using System.Collections.ObjectModel;
 namespace GoTournamentProgram.Model
 {
     [DataContract]
-    public class Player:Person
+    public class Player: Person, IComparable<Player>
     {
         /// <summary>
         /// Id участника турнира
@@ -87,6 +87,24 @@ namespace GoTournamentProgram.Model
         }
 
         /// <summary>
+        /// Место в турнире
+        /// </summary>
+        private int place;
+        /// <summary>
+        /// Получает или задает место в турнире
+        /// </summary>
+        [DataMember]
+        public int Place
+        {
+            get { return this.place; }
+            set
+            {
+                this.place = value;
+                OnPropertyChanged("Place");
+            }
+        }
+
+        /// <summary>
         /// Очки макмагона
         /// </summary>
         private int mmr;
@@ -100,6 +118,7 @@ namespace GoTournamentProgram.Model
             set
             {
                 this.mmr = value;
+                this.Points = this.Points + value;
                 OnPropertyChanged("MMR");
             }
         }
@@ -107,12 +126,12 @@ namespace GoTournamentProgram.Model
         /// <summary>
         /// Количество побед + очки макмагона
         /// </summary>
-        private int points;
+        private double points;
         /// <summary>
         /// Получает или задает турнирные очки участника турнира
         /// </summary>
         [DataMember]
-        public int Points
+        public double Points
         {
             get { return this.points; }
             set
@@ -125,12 +144,12 @@ namespace GoTournamentProgram.Model
         /// <summary>
         /// Сумма очков всех соперников
         /// </summary>
-        private int buhgolz;
+        private double buhgolz;
         /// <summary>
         /// Получает или задает сумму очков всех соперников участника турнира
         /// </summary>
         [DataMember]
-        public int Buhgolz
+        public double Buhgolz
         {
             get { return this.buhgolz; }
             set
@@ -144,12 +163,12 @@ namespace GoTournamentProgram.Model
         /// Сумма очков противников, у которых участник выиграл + 
         /// 1/2 суммы очков противников, с которыми сыграл вничью
         /// </summary>
-        private int berger;
+        private double berger;
         /// <summary>
         /// Получает или задает коэффициент Бергера участника турнира
         /// </summary>
         [DataMember]
-        public int Berger
+        public double Berger
         {
             get { return this.berger; }
             set
@@ -165,6 +184,7 @@ namespace GoTournamentProgram.Model
         private readonly ObservableCollection<Game> games = new ObservableCollection<Game>();
         [DataMember]
         public List<Game> Games { get; set; }
+
         public Player()
         {
             this.ID = -1;
@@ -176,17 +196,14 @@ namespace GoTournamentProgram.Model
             this.Surname = "-";
 
             // TournamentSettings:
-            this.Points = 0;
+            this.Place = 0;
+            this.Points = 0.0;
             this.MMR = 0;
             this.Buhgolz = 0;
             this.Berger = 0;
 
             //
-            this.games.Add(new Game(1));
-            this.games.Add(new Game(2));
-            this.games.Add(new Game(3));
             this.Games = new List<Game>(games);
-
         }
 
         public void AddGameResult(int tour, Game game)
@@ -201,6 +218,63 @@ namespace GoTournamentProgram.Model
         {
             //this.Games[tour] = new Game(opponentId);
         }
+
+        /// <summary>
+        /// Реализация интерфейса IComparable
+        /// </summary>
+        /// <param name="other">Объект для сравнения</param>
+        /// <returns>Результат сравнения двух участников турнира</returns>
+        public int CompareTo(Player other)
+        {
+            if (this.Points > other.Points)
+            {
+                return -1;
+            }
+            else if (this.Points < other.Points)
+            {
+                return 1;
+            }
+            else
+            {
+                if (this.Buhgolz > other.Buhgolz)
+                {
+                    return -1;
+                }
+                else if (this.Buhgolz < other.Buhgolz)
+                {
+                    return 1;
+                }
+                else
+                {
+                    if (this.Berger > other.Berger)
+                    {
+                        return -1;
+                    }
+                    else if (this.Berger < other.Berger)
+                    {
+                        return 1;
+                    }
+                    else
+                    {
+                        if (this.Rating > other.Rating)
+                        {
+                            return -1;
+                        }
+                        else if (this.Rating < other.Rating)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            // Личная встреча
+                            return 0;
+                        }
+                    }
+                }
+            }
+        }
+
+
         //public void AddGameResult(int tour)
         //{
         //    this.Games[tour] = new Game();
