@@ -11,11 +11,8 @@ using GoTournamentProgram.Services;
 
 namespace GoTournamentProgram
 {
-    class TournamentVM: BindableBase
+    class TournamentVM : BindableBase
     {
-        public Dictionary<string, Game> TestDict = new Dictionary<string, Game>();
-        //
-
         private IDialogService dialogService;
         private IFileService fileService;
 
@@ -24,7 +21,7 @@ namespace GoTournamentProgram
         public ReadOnlyObservableCollection<Player> Players => _model.Players;
         public string Name { get => _model.Name; set { _model.Name = value; } }
         public string Organizer { get => _model.Organizer; set { _model.Organizer = value; } }
-        public TournamentSystem System { get => _model.System; set { _model.System = value; } }
+        public TournamentSystem System { get => _model.System; set { _model.SetSystem(value); } }
         public DateTime StartDate { get => _model.StartDate; set { _model.StartDate = value; } }
         public DateTime EndDate
         {
@@ -42,15 +39,24 @@ namespace GoTournamentProgram
             }
         }
 
-        public TournamentSetting<int> NumberOfTours {
-            get =>_model.NumberOfTours;
-            set { _model.NumberOfTours = value; }
+        public int NumberOfTours {
+            get => _model.NumberOfTours;
+            set { _model.SetNumberOfTours(value); }
         }
+
+        public bool IsNumberOfToursEnabled {
+            get => _model.IsNumberOfToursEnabled;
+            set { _model.IsNumberOfToursEnabled = value; }
+        }
+
+        public int CurrentTour => _model.CurrentTour;
+
+        //
+        public List<string> AllPlayers => _model.AllPlayers;
+        //
 
         public TournamentVM(IDialogService dialogService, IFileService fileService)
         {
-            TestDict.Add("xxx", new Game(19));
-            //
 
             this.dialogService = dialogService;
             this.fileService = fileService;
@@ -58,7 +64,7 @@ namespace GoTournamentProgram
             //таким нехитрым способом мы пробрасываем изменившиеся свойства модели во View
             _model.PropertyChanged += (sender, e) => { RaisePropertyChanged(e.PropertyName); };
             //
-            AddPlayer = new DelegateCommand(_model.AddPlayer);
+            AddPlayer = new DelegateCommand<string>(name => { _model.AddPlayer(name); });
             Save = new DelegateCommand(SaveCommand);
             Open = new DelegateCommand(OpenCommand);
             Delete = new DelegateCommand<int?>(i =>
@@ -66,13 +72,22 @@ namespace GoTournamentProgram
                 if (i.HasValue) _model.Delete(i.Value);
             });
             RemoveAll = new DelegateCommand(_model.RemoveAll);
+            NextTour = new DelegateCommand(() => 
+            {
+                try { _model.NextTour(); }
+                catch (ArgumentOutOfRangeException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
+            });
         }
 
-        public DelegateCommand AddPlayer { get; }
+        public DelegateCommand<string> AddPlayer { get; }
         public DelegateCommand Save { get; }
         public DelegateCommand Open { get; }
         public DelegateCommand<int?> Delete { get; }
         public DelegateCommand RemoveAll { get; }
+        public DelegateCommand NextTour { get; }
 
         private void OpenCommand()
         {

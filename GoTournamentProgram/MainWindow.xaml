@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:GoTournamentProgram"
 		xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="{Binding Name}" Height="350" Width="525"
+        Title="{Binding Name}" MinHeight="400" MinWidth="650"
+		Name="mainWindow"
 		Icon="/Resources/header.ico"
 		BorderBrush="AliceBlue" BorderThickness="1">
 	<Window.Resources>
@@ -14,6 +15,12 @@
                             ObjectType="{x:Type System:Enum}">
 			<ObjectDataProvider.MethodParameters>
 				<x:Type TypeName="local:TournamentSystem"/>
+			</ObjectDataProvider.MethodParameters>
+		</ObjectDataProvider>
+		<ObjectDataProvider x:Key="gameResultData" MethodName="GetValues"
+                            ObjectType="{x:Type System:Enum}">
+			<ObjectDataProvider.MethodParameters>
+				<x:Type TypeName="local:GameResult"/>
 			</ObjectDataProvider.MethodParameters>
 		</ObjectDataProvider>
 	</Window.Resources>
@@ -74,35 +81,48 @@
 				</StackPanel>
 				<StackPanel Grid.Column="1" Margin="10 0 0 0">
 					<Label>Number of tours:</Label>
-					<TextBox Text="{Binding NumberOfTours.Value}" IsEnabled="{Binding NumberOfTours.IsEnabled}"/>
+					<TextBox Text="{Binding NumberOfTours}" IsEnabled="{Binding IsNumberOfToursEnabled}"/>
 				</StackPanel>
 			</Grid>
 		</Expander>
 
 		<DockPanel Grid.Row="2">
-			<StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-				<Button Content="Add player" Margin="5" Command="{Binding AddPlayer}"/>
+			<StackPanel Margin="5" DockPanel.Dock="Top" Orientation="Horizontal">
+				<ComboBox Name="PlayerName" Margin="5" MinWidth="100" MaxWidth="200"
+						  ItemsSource="{Binding AllPlayers}" IsEditable="True"/>
+				<Button Content="Add player" Margin="5" Command="{Binding AddPlayer}"
+						CommandParameter="{Binding ElementName=PlayerName, Path=Text}"/>
 				<Button Content="Delete" Margin="5" Command="{Binding Delete}"
 					CommandParameter="{Binding ElementName=PlayersGrid, Path=SelectedIndex}"/>
 				<Button Content="Remove all" Margin="5" Command="{Binding RemoveAll}"/>
+				<Label Margin="5">Current tour:</Label>
+				<Label Margin="5" Content="{Binding CurrentTour}"/>
+				<Button Margin="5" Content="Next tour" Command="{Binding NextTour}"/>
 			</StackPanel>
 			
 			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Players}" AutoGenerateColumns="False"
 						  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}" Margin="10 0 10 10">
 				<DataGrid.Columns>
+					<DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}"/>
+					<DataGridTextColumn Header="Name" Binding="{Binding Surname}"/>
 					<DataGridTextColumn Header="City" Binding="{Binding City}"/>
 					<DataGridTextColumn Header="Rating" Binding="{Binding Rating}"/>
+					<DataGridTextColumn Header="MMR" Binding="{Binding MMR}"/>
 
-					<DataGridTemplateColumn Header="Games" Width="auto">
+					<DataGridTemplateColumn  Header="Games" Width="auto">
 						<DataGridTemplateColumn.CellTemplate>
 							<ItemContainerTemplate>
-								<DataGrid ItemsSource="{Binding Games}" BorderBrush="White" GridLinesVisibility="Vertical"
+								<DataGrid ItemsSource="{Binding Games, Mode=TwoWay}" BorderBrush="White" GridLinesVisibility="Vertical"
 											  HeadersVisibility="None" VerticalScrollBarVisibility="Disabled" 
-											  HorizontalScrollBarVisibility="Disabled" IsReadOnly="False" AutoGenerateColumns="False">
+											  HorizontalScrollBarVisibility="Disabled" IsReadOnly="False" 
+										  AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
 									<DataGrid.Columns>
-										<DataGridTextColumn Binding="{Binding Opponent}" IsReadOnly="False"></DataGridTextColumn>
-										<DataGridTextColumn Binding="{Binding Result}"></DataGridTextColumn>
+										<DataGridTextColumn Width="30" Binding="{Binding Opponent}" IsReadOnly="False"></DataGridTextColumn>
+										<!--<DataGridTextColumn Binding="{Binding Result}"></DataGridTextColumn>-->
+										<DataGridComboBoxColumn Width="110" DataGridComboBoxColumn.SelectedItemBinding="{Binding Result}"
+											DataGridComboBoxColumn.ItemsSource="{Binding Source={StaticResource gameResultData}}">
+										</DataGridComboBoxColumn>
 									</DataGrid.Columns>
 									<DataGrid.ItemsPanel>
 										<ItemsPanelTemplate>
@@ -114,8 +134,10 @@
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
 
-					<!--<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>
-						<DataGridTextColumn Header="Berger" Binding="{Binding Berger}"/>-->
+					<DataGridTextColumn Header="Points" Binding="{Binding Points}" IsReadOnly="True"/>
+					<DataGridTextColumn Header="Berger" Binding="{Binding Berger}" IsReadOnly="True"/>
+					<DataGridTextColumn Header="Buhgolz" Binding="{Binding Buhgolz}" IsReadOnly="True"/>
+					<DataGridTextColumn Header="Place" Binding="{Binding Place}" IsReadOnly="True"/>
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>

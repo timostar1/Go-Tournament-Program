@@ -30,6 +30,8 @@ namespace GoTournamentProgram
             }
         }
 
+        public TournamentSetting() { }
+
         public TournamentSetting(T value, bool isEnabled)
         {
             Value = value;
