@@ -11,6 +11,18 @@ namespace GoTournamentProgram.Model
     [DataContract]
     public class Game: Notifier
     {
+        private int opponentId;
+        [DataMember]
+        public int OpponentId
+        {
+            get { return this.opponentId; }
+            set
+            {
+                this.opponentId = value;
+                OnPropertyChanged("OpponentId");
+            }
+        }
+
         private int opponent;
         [DataMember]
         public int Opponent
@@ -38,7 +50,8 @@ namespace GoTournamentProgram.Model
         public Game()
         {
             this.opponent = -1;
-            this.result = GameResult.Absence;
+            this.opponentId = -1;
+            this.result = GameResult.NotFinished;
         }
     }
 }

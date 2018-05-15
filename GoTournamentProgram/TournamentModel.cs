@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using GoTournamentProgram.Services;
+using System.Net;
 
 namespace GoTournamentProgram
 {
@@ -38,6 +39,9 @@ namespace GoTournamentProgram
     [DataContract]
     public class TournamentModel: Notifier
     {
+        // TODO: свойство
+        private bool isFinished = false;
+
         /// <summary>
         /// Список всех игроков
         /// </summary>
@@ -105,7 +109,7 @@ namespace GoTournamentProgram
             }
             else
             {
-                SetNumberOfTours(this.players.Count - 1);
+                SetNumberOfTours(this.players.Count + this.players.Count % 2 - 1);
                 this.IsNumberOfToursEnabled = false;
             }
             this.System = system;
@@ -208,7 +212,30 @@ namespace GoTournamentProgram
 
         public void SetNumberOfTours(int number)
         {
+            List<Player> newPlayers = players.ToList();
             players.Clear();
+            try
+            {
+                foreach (Player p in newPlayers)
+                {
+                    List<Game> games = new List<Game>();
+                    for (int i = 0; i < number; i++)
+                    {
+                        if (i < NumberOfTours)
+                        {
+                            games.Add(p.Games[i]);
+                        }
+                        else
+                        {
+                            games.Add(new Game());
+                        }
+                    }
+                    p.Games = games;
+                    players.Add(p);
+                }
+            }
+            catch { }
+            
             NumberOfTours = number;
         }
 
@@ -258,17 +285,30 @@ namespace GoTournamentProgram
             IsNumberOfToursEnabled = model.IsNumberOfToursEnabled;
         }
 
-        private void SortPlayers()
+        private void SortPlayers(List<Player> players)
         {
-            List<Player> list_players =  players.ToList();
-            list_players.Sort();
-            players.Clear();
+            players.Sort();
+            this.players.Clear();
             int place = 1;
-            foreach (Player p in list_players)
+            foreach (Player p in players)
             {
                 p.Place = place;
-                players.Add(p);
                 place++;
+            }
+            int id;
+            int index;
+            foreach (Player p in players)
+            {
+                foreach (Game g in p.Games)
+                {
+                    id = g.OpponentId;
+                    if (id != -1)
+                    {
+                        index = Sortitions.FindPlayerIndex(players, id);
+                        g.Opponent = players[index].Place;
+                    }
+                }
+                this.players.Add(p);
             }
         }
 
@@ -276,12 +316,18 @@ namespace GoTournamentProgram
         {
             if (CurrentTour == NumberOfTours)
             {
+                if (!isFinished)
+                {
+                    UpdatePoints();
+                    isFinished = true;
+                }
                 throw new ArgumentOutOfRangeException("CurrentTour", "Это уже последний тур!");
             }
             if (CurrentTour > 0)
             {
                 if (System == TournamentSystem.Circle)
                 {
+                    UpdatePoints();
                     CurrentTour += 1;
                 }
                 else
@@ -299,11 +345,15 @@ namespace GoTournamentProgram
 
         private void UpdatePoints()
         {
-            // Изменяем игровые очки
-            foreach (Player p in players)
+            List<Player> players = this.players.ToList();
+
+            if (currentTour > 0)
             {
-                foreach (Game game in p.Games)
+                // Изменяем игровые очки
+                Game game;
+                foreach (Player p in players)
                 {
+                    game = p.Games[CurrentTour - 1];
                     if (game.Result == GameResult.Win || game.Result == GameResult.WinByAbsence)
                     {
                         p.Points += 1;
@@ -313,34 +363,49 @@ namespace GoTournamentProgram
                         p.Points += 0.5;
                     }
                 }
-            }
 
-            // Изменяем коэффициенты Бухгольца и бергера
-            foreach (Player p in players)
-            {
-                foreach (Game game in p.Games)
+                // Изменяем коэффициенты Бухгольца и бергера
+                foreach (Player p in players)
                 {
-                    if (game.Result == GameResult.Win || game.Result == GameResult.WinByAbsence)
+                    game = p.Games[CurrentTour - 1];
+                    if (game.OpponentId != -1)
                     {
+                        // индекс и очки противника
+                        int index = Sortitions.FindPlayerIndex(players, game.OpponentId);
+                        double points = players[index].Points;
 
-                    }
-                    else if (game.Result == GameResult.Draw)
-                    {
-                        
-                    }
-                    else if(game.Result == GameResult.Defeat || game.Result == GameResult.DefeatByAbsence)
-                    {
-
+                        if (game.Result == GameResult.Win || game.Result == GameResult.WinByAbsence)
+                        {
+                            p.Buhgolz += points;
+                            p.Berger += points;
+                        }
+                        else if (game.Result == GameResult.Draw)
+                        {
+                            p.Buhgolz += points / 2;
+                            p.Berger += points / 2;
+                        }
+                        else if (game.Result == GameResult.Defeat || game.Result == GameResult.DefeatByAbsence)
+                        {
+                            p.Buhgolz += points;
+                        }
                     }
                 }
             }
+
+            SortPlayers(players);
         }
 
         private void MakeSortition()
         {
             UpdatePoints();
             // Вызов жеребьевки
-            SortPlayers();
+            List<Player> players = Sortitions.CircleSystem(this.players.ToList());
+
+            this.players.Clear();
+            foreach (Player p in players)
+            {
+                this.players.Add(p);
+            }
         }
 
         public void AddPlayer(string name)
@@ -365,7 +430,7 @@ namespace GoTournamentProgram
                 Game game = new Game();
                 if (i < CurrentTour)
                 {
-                    // Ставить пропуск игры
+                    game.Result = GameResult.Absence;
                 }
                 p.Games.Add(game);
             }
@@ -394,14 +459,30 @@ namespace GoTournamentProgram
 
             DataContractJsonSerializer jsonFormatter = new DataContractJsonSerializer(typeof(List<Player>));
 
-            using (FileStream fs = new FileStream("all_players.json", FileMode.OpenOrCreate))
+            string api_url = "http://178.62.24.26:8888/api/players";
+
+            try
             {
-                this.allPlayers = (List<Player>)jsonFormatter.ReadObject(fs);
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(api_url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+                using (StreamReader stream = new StreamReader(
+                     response.GetResponseStream(), Encoding.UTF8))
+                {
+                    this.allPlayers = (List<Player>)jsonFormatter.ReadObject(stream.BaseStream);
+                }
+            }
+            catch
+            {
+                using (FileStream fs = new FileStream("all_players.json", FileMode.OpenOrCreate))
+                {
+                    this.allPlayers = (List<Player>)jsonFormatter.ReadObject(fs);
+                }
             }
 
             foreach (Player p in this.allPlayers)
             {
-                this.AllPlayers.Add($"{p.Name} {p.Surname}");
+                this.AllPlayers.Add($"{p.Surname} {p.Name}");
             }
         }
     }

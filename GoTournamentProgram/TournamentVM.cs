@@ -65,7 +65,7 @@ namespace GoTournamentProgram
             _model.PropertyChanged += (sender, e) => { RaisePropertyChanged(e.PropertyName); };
             //
             AddPlayer = new DelegateCommand<string>(name => { _model.AddPlayer(name); });
-            Save = new DelegateCommand(SaveCommand);
+            Save = new DelegateCommand(SaveCommand);    
             Open = new DelegateCommand(OpenCommand);
             Delete = new DelegateCommand<int?>(i =>
             {
