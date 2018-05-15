@@ -55,16 +55,20 @@ namespace GoTournamentProgram.Model
                     int p2 = circleDict[pair[1]];
                     if (p1 == -1)
                     {
-                        //players[p2 - 1].AddGameResult(round);
+                        players[p2 - 1].Games[round - 1].Result = GameResult.Absence;
                     }
                     else if (p2 == -1)
                     {
-                        //players[p1 - 1].AddGameResult(round);
+                        players[p1 - 1].Games[round - 1].Result = GameResult.Absence;
                     }
                     else
                     {
-                        players[p2 - 1].AddGameResult(round, p1);
-                        players[p1 - 1].AddGameResult(round, p2);
+                        players[p2 - 1].Games[round - 1].Result = GameResult.NotFinished;
+                        players[p2 - 1].Games[round - 1].Opponent = players[p1 - 1].Place;
+                        players[p2 - 1].Games[round - 1].OpponentId = players[p1 - 1].ID;
+                        players[p1 - 1].Games[round - 1].Result = GameResult.NotFinished;
+                        players[p1 - 1].Games[round - 1].Opponent = players[p2 - 1].Place;
+                        players[p1 - 1].Games[round - 1].OpponentId = players[p2 - 1].ID;
                     }
                     //Console.WriteLine($"{p[0]} ({circleDict[p[0]]}) - {p[1]} ({circleDict[p[1]]})");
                 }
@@ -86,6 +90,19 @@ namespace GoTournamentProgram.Model
         public static List<Player> OlympicSystem(List<Player> players)
         {
             return null;
+        }
+
+        public static int FindPlayerIndex(List<Player> players, int id)
+        {
+            int index =  players.FindIndex(p => 
+            {
+                if (p.ID == id)
+                {
+                    return true;
+                }
+                else return false;
+            });
+            return index;
         }
     }
 }
