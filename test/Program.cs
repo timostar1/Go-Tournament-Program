@@ -47,30 +47,78 @@ namespace test
         static void Main(string[] args)
         {
             List<Player> players = new List<Player>();
-            for (int i = 0; i < 7; i++)
-            {
-                players.Add(new Player());
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                Tournament tournament = new Tournament(players, TournamentSettings.TournamentSystem.Circle);
-                //Console.WriteLine(players[0].TournamentSettings.Games.Count);
-                tournament.MakeSortition();
-                List<Player> pl = tournament.Players;
-                //tournament.AddGameResult(1, '+');
-                foreach (Player player in pl)
-                {
-                    Console.Write($"{player.ID}  ");
-                    for (int tour = 1; tour <= player.Games.Count; tour++)
-                    {
 
-                        Game game = player.Games[tour];
-                        Console.Write($"{game} ");
-                    }
-                    Console.WriteLine();
-                }
-                Console.WriteLine();
-            }
+            Player p;
+            p = new Player();
+            p.Name = "A";
+            p.Surname = "AA";
+            p.Rating = 2100;
+            p.MMR = 10;
+            p.Place = 1;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            players.Add(p);
+
+            p = new Player();
+            p.Name = "B";
+            p.Surname = "BB";
+            p.Rating = 2000;
+            p.MMR = 5;
+            p.Place = 2;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            players.Add(p);
+
+            p = new Player();
+            p.Name = "C";
+            p.Surname = "CC";
+            p.Rating = 1900;
+            p.MMR = 5;
+            p.Place = 3;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            players.Add(p);
+
+            p = new Player();
+            p.Name = "D";
+            p.Surname = "DD";
+            p.Rating = 1000;
+            p.MMR = 2;
+            p.Place = 4;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            players.Add(p);
+
+            p = new Player();
+            p.Name = "E";
+            p.Surname = "EE";
+            p.Rating = 1000;
+            p.MMR = 2;
+            p.Place = 5;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            p.Games[0].Result = GameResult.Absence;
+            players.Add(p);
+
+            p = new Player();
+            p.Name = "F";
+            p.Surname = "FF";
+            p.Rating = 1000;
+            p.MMR = 2;
+            p.Place = 6;
+            p.ID = p.Place;
+            p.Games = new List<Game>();
+            p.Games.Add(new Game());
+            players.Add(p);
+
+
+
+            Sortitions.MakmagonSystem(players, 1);
         }
     }
 }

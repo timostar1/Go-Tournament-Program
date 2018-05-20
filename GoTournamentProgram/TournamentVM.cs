@@ -79,6 +79,10 @@ namespace GoTournamentProgram
                 {
                     dialogService.ShowMessage(ex.Message);
                 }
+                catch (ArgumentException ex)
+                {
+                    dialogService.ShowMessage(ex.Message);
+                }
             });
         }
 

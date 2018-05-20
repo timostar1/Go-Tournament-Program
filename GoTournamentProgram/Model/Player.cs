@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
-using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 
 namespace GoTournamentProgram.Model
@@ -194,6 +188,7 @@ namespace GoTournamentProgram.Model
             this.Rating = 0;
             this.Name = "-";
             this.Surname = "-";
+            this.Gender = "Male";
 
             // TournamentSettings:
             this.Place = 0;
@@ -279,5 +274,15 @@ namespace GoTournamentProgram.Model
         //{
         //    this.Games[tour] = new Game();
         //}
+
+        public override string ToString()
+        {
+            string games = "";
+            foreach (Game g in Games)
+            {
+                games += $"| {g.Opponent}{(char)g.Result} ";
+            }
+            return $"{Name} {Surname} {Rating} {MMR} {games}| {Points} {Place}";
+        }
     }
 }

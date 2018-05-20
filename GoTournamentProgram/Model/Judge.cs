@@ -1,14 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace GoTournamentProgram.Model
 {
-    public class Judge:Person
+    public class Judge: Person
     {
-        public string Qualification { get; set; }
-        public DateTime WorkSince { get; set; }
+        private string qualification;
+        public string Qualification
+        {
+            get { return this.qualification; }
+            set
+            {
+                this.qualification = value;
+                OnPropertyChanged("Qualification");
+            }
+        }
+        private DateTime workSince;
+        public DateTime WorkSince
+        {
+            get { return this.workSince; }
+            set
+            {
+                this.workSince = value;
+                OnPropertyChanged("WorkSince");
+            }
+        }
+
+        public Judge()
+        {
+            this.Name = "-";
+            this.Surname = "-";
+            this.Gender = "Male";
+            this.BirthDate = DateTime.Now;
+            this.WorkSince = DateTime.Now;
+            this.Qualification = "-";
+        }
     }
 }

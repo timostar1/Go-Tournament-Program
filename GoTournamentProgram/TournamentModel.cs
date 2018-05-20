@@ -157,7 +157,7 @@ namespace GoTournamentProgram
         /// </summary>
         private DateTime endDate;
         /// <summary>
-        /// Получает или задает дату начала турнира
+        /// Получает или задает дату окончания турнира
         /// </summary>
         [DataMember]
         public DateTime EndDate
@@ -398,8 +398,23 @@ namespace GoTournamentProgram
         private void MakeSortition()
         {
             UpdatePoints();
+            List<Player> players = new List<Player>();
             // Вызов жеребьевки
-            List<Player> players = Sortitions.CircleSystem(this.players.ToList());
+            switch (System)
+            {
+                case TournamentSystem.Circle:
+                    players = Sortitions.CircleSystem(this.players.ToList());
+                    break;
+                case TournamentSystem.MakMagon:
+                    players = Sortitions.MakmagonSystem(this.players.ToList(), CurrentTour + 1);
+                    break;
+            }
+
+            // Случай, когда неозможно провести жеребьевку
+            if (players is null)
+            {
+                throw new ArgumentException("Неозможно провести жеребьевку!");
+            }
 
             this.players.Clear();
             foreach (Player p in players)
