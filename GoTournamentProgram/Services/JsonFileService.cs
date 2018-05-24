@@ -37,7 +37,7 @@ namespace GoTournamentProgram.Services
 
             // TODO: Устранить проблемы при сохранении в 
             //       существующий файл (большего размера)
-            using (FileStream fs = new FileStream(filename, FileMode.OpenOrCreate))
+            using (FileStream fs = new FileStream(filename, FileMode.Create))
             {
                 jsonFormatter.WriteObject(fs, tournament);
             }

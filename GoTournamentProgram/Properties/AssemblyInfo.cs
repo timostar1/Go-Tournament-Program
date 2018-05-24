@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyCompany("Московская федерация Го")]
 [assembly: AssemblyProduct("GoTournamentProgram")]
 [assembly: AssemblyCopyright("Timofey Starodubtsev ©  2018")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("timostar")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False для параметра ComVisible делает типы в этой сборке невидимыми

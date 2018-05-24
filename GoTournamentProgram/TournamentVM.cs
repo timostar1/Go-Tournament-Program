@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GoTournamentProgram.Model;
 using GoTournamentProgram.Services;
+using System.IO;
 
 namespace GoTournamentProgram
 {
@@ -61,9 +62,10 @@ namespace GoTournamentProgram
             this.dialogService = dialogService;
             this.fileService = fileService;
 
-            //таким нехитрым способом мы пробрасываем изменившиеся свойства модели во View
+            // пробрасываем изменившиеся свойства модели во View
             _model.PropertyChanged += (sender, e) => { RaisePropertyChanged(e.PropertyName); };
             //
+            PrintPlayers = new DelegateCommand(PrintTableCommand);
             AddPlayer = new DelegateCommand<string>(name => { _model.AddPlayer(name); });
             Save = new DelegateCommand(SaveCommand);    
             Open = new DelegateCommand(OpenCommand);
@@ -92,6 +94,7 @@ namespace GoTournamentProgram
         public DelegateCommand<int?> Delete { get; }
         public DelegateCommand RemoveAll { get; }
         public DelegateCommand NextTour { get; }
+        public DelegateCommand PrintPlayers { get; }
 
         private void OpenCommand()
         {
@@ -101,7 +104,7 @@ namespace GoTournamentProgram
                 {
                     TournamentModel newTournament = fileService.Open(dialogService.FilePath);
                     _model.Update(newTournament);
-                    dialogService.ShowMessage("Файл открыт");
+                    dialogService.ShowMessage("File opened");
                 }
             }
             catch (Exception ex)
@@ -117,10 +120,33 @@ namespace GoTournamentProgram
                 if (dialogService.SaveFileDialog() == true)
                 {
                     fileService.Save(dialogService.FilePath, _model);
-                    dialogService.ShowMessage("Файл сохранен");
+                    dialogService.ShowMessage("File saved");
                 }
             }
             catch (Exception ex)
+            {
+                dialogService.ShowMessage(ex.Message);
+            }
+        }
+
+        private void PrintTableCommand()
+        {
+            try
+            {
+                List<string> games = _model.PrintGames();
+                using (FileStream fs = new FileStream($"{Name}-{CurrentTour}_tour_sortition.txt", FileMode.Create))
+                {
+                    using (StreamWriter sw = new StreamWriter(fs, Encoding.Default))
+                    {
+                        foreach (string game in games)
+                        {
+                            sw.WriteLine(game);
+                        }
+                    }
+                }
+                dialogService.ShowMessage($"File {Name} - {CurrentTour}_tour_sortition.txt saved");
+            }
+            catch (ArgumentException ex)
             {
                 dialogService.ShowMessage(ex.Message);
             }

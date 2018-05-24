@@ -466,6 +466,35 @@ namespace GoTournamentProgram
             players.Clear();
         }
 
+        public List<string> PrintGames()
+        {
+            if (currentTour == 0)
+            {
+                throw new ArgumentException("There are no sortitions yet!");
+            }
+            List<Player> pls = players.ToList();
+            List<string> res = new List<string>();
+
+            List<int> usedids = new List<int>();
+            string sgame;
+            Game game;
+            foreach (Player p in pls)
+            {
+                if (!usedids.Contains(p.ID))
+                {
+                    game = p.Games[currentTour - 1];
+                    if (game.OpponentId == -1) continue;
+
+                    int index = Sortitions.FindPlayerIndex(pls, game.OpponentId);
+                    sgame = $"{res.Count + 1} {p.Surname} {p.Name} - {pls[index].Surname} {pls[index].Name}";
+                    usedids.Add(p.ID);
+                    usedids.Add(pls[index].ID);
+                    res.Add(sgame);
+                }
+            }
+
+            return res;
+        }
 
         private void LoadAllPlayers()
         {

@@ -32,21 +32,21 @@
 		</Grid.RowDefinitions>
 		<Menu Grid.Row="0">
 			<MenuItem Header="File">
-				<MenuItem Name="NewMenuItem" Header="New"></MenuItem>
+				<!--<MenuItem Name="NewMenuItem" Header="New"></MenuItem>-->
 				<MenuItem Name="OpenMenuItem" Header="Open" Command="{Binding Open}"></MenuItem>
 				<MenuItem Name="SaveMenuItem" Header="Save" Command="{Binding Save}"></MenuItem>
-				<MenuItem Name="SaveAsMenuItem" Header="SaveAs..."></MenuItem>
-				<Separator></Separator>
-				<MenuItem Name="ExitMenuItem" Header="Exit"></MenuItem>
+				<!--<MenuItem Name="SaveAsMenuItem" Header="SaveAs..."></MenuItem>-->
+				<!--<Separator></Separator>
+				<MenuItem Name="ExitMenuItem" Header="Exit"></MenuItem>-->
 			</MenuItem>
-			<MenuItem Header="Edit">
+			<!--<MenuItem Header="Edit">
 				<MenuItem Header="Undo"></MenuItem>
 				<MenuItem Header="Redo"></MenuItem>
 				<Separator></Separator>
 				<MenuItem Header="Cut"></MenuItem>
 				<MenuItem Header="Copy"></MenuItem>
 				<MenuItem Header="Paste"></MenuItem>
-			</MenuItem>
+			</MenuItem>-->
 		</Menu>
 		
 		<!--<TabControl Name="TabTournaments" Grid.Row="1" ItemsSource="{Binding TestDict}">
@@ -98,6 +98,7 @@
 				<Label Margin="5">Current tour:</Label>
 				<Label Margin="5" Content="{Binding CurrentTour}"/>
 				<Button Margin="5" Content="Next tour" Command="{Binding NextTour}"/>
+				<Button Margin="5" Content="Print table" Command="{Binding PrintPlayers}"/>
 			</StackPanel>
 			
 			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Players}" AutoGenerateColumns="False"
