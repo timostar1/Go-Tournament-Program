@@ -529,5 +529,19 @@ namespace GoTournamentProgram
                 this.AllPlayers.Add($"{p.Surname} {p.Name}");
             }
         }
+
+        public void AddJudge()
+        {
+            judges.Add(new Judge());
+        }
+
+        public void RemoveJudgeAt(int index)
+        {
+            try
+            {
+                judges.RemoveAt(index);
+            }
+            catch { }
+        }
     }
 }

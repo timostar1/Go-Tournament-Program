@@ -20,6 +20,7 @@ namespace GoTournamentProgram
         readonly TournamentModel _model = new TournamentModel();
 
         public ReadOnlyObservableCollection<Player> Players => _model.Players;
+        public ReadOnlyObservableCollection<Judge> Judges => _model.Judges;
         public string Name { get => _model.Name; set { _model.Name = value; } }
         public string Organizer { get => _model.Organizer; set { _model.Organizer = value; } }
         public TournamentSystem System { get => _model.System; set { _model.SetSystem(value); } }
@@ -86,6 +87,19 @@ namespace GoTournamentProgram
                     dialogService.ShowMessage(ex.Message);
                 }
             });
+
+            AddJudge = new DelegateCommand(_model.AddJudge);
+            RemoveJudge = new DelegateCommand<int?>(i => {
+                if (i.HasValue) { _model.RemoveJudgeAt(i.Value); }
+            });
+
+            //
+            AddPlayerByKey = new DelegateCommand<string>(name => {
+                if (name != "")
+                {
+                    _model.AddPlayer(name);
+                }
+            });
         }
 
         public DelegateCommand<string> AddPlayer { get; }
@@ -95,6 +109,14 @@ namespace GoTournamentProgram
         public DelegateCommand RemoveAll { get; }
         public DelegateCommand NextTour { get; }
         public DelegateCommand PrintPlayers { get; }
+
+        public DelegateCommand AddJudge { get; }
+        public DelegateCommand<int?> RemoveJudge { get; } 
+
+        //
+        public DelegateCommand<string> AddPlayerByKey { get; }
+
+        //
 
         private void OpenCommand()
         {
@@ -117,7 +139,7 @@ namespace GoTournamentProgram
         {
             try
             {
-                if (dialogService.SaveFileDialog() == true)
+                if (dialogService.SaveFileDialog($"{Name}.json") == true)
                 {
                     fileService.Save(dialogService.FilePath, _model);
                     dialogService.ShowMessage("File saved");
@@ -133,18 +155,21 @@ namespace GoTournamentProgram
         {
             try
             {
-                List<string> games = _model.PrintGames();
-                using (FileStream fs = new FileStream($"{Name}-{CurrentTour}_tour_sortition.txt", FileMode.Create))
+                if (dialogService.SaveFileDialog($"{Name}-{CurrentTour}_tour.txt") == true)
                 {
-                    using (StreamWriter sw = new StreamWriter(fs, Encoding.Default))
+                    List<string> games = _model.PrintGames();
+                    using (FileStream fs = new FileStream(dialogService.FilePath, FileMode.Create))
                     {
-                        foreach (string game in games)
+                        using (StreamWriter sw = new StreamWriter(fs, Encoding.Default))
                         {
-                            sw.WriteLine(game);
+                            foreach (string game in games)
+                            {
+                                sw.WriteLine(game);
+                            }
                         }
                     }
+                    dialogService.ShowMessage($"File \"{dialogService.FilePath}\" saved");
                 }
-                dialogService.ShowMessage($"File {Name} - {CurrentTour}_tour_sortition.txt saved");
             }
             catch (ArgumentException ex)
             {
