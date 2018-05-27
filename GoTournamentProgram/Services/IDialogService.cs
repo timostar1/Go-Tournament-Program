@@ -30,5 +30,7 @@ namespace GoTournamentProgram.Services
         /// </summary>
         /// <returns>Статус операции сохранения</returns>
         bool SaveFileDialog();
+
+        bool SaveFileDialog(string filename);
     }
 }

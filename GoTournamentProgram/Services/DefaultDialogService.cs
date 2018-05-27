@@ -29,6 +29,18 @@ namespace GoTournamentProgram.Services
             return false;
         }
 
+        public bool SaveFileDialog(string filename)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = filename;
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                FilePath = saveFileDialog.FileName;
+                return true;
+            }
+            return false;
+        }
+
         public void ShowMessage(string message)
         {
             MessageBox.Show(message);
