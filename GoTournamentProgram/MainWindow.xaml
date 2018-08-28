@@ -40,9 +40,9 @@
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
-			<!--<ColumnDefinition/>-->
+			<ColumnDefinition Width="auto"/>
 		</Grid.ColumnDefinitions>
-		<Menu Grid.Row="0">
+		<Menu Grid.Row="0" Grid.ColumnSpan="2">
 			<MenuItem Header="File">
 				<!--<MenuItem Name="NewMenuItem" Header="New"></MenuItem>-->
 				<MenuItem Name="OpenMenuItem" Header="Open" Command="{Binding Open}"></MenuItem>
@@ -137,7 +137,7 @@
 			</StackPanel>
 			
 			<DataGrid x:Name="PlayersGrid" ItemsSource="{Binding Players}" AutoGenerateColumns="False"
-					  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}" Margin="10 0 10 10"
+					  CanUserDeleteRows="True" CurrentItem="{Binding Source=CurrentPlayer}" Margin="10 0 10 5"
 					  CanUserReorderColumns="False">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
@@ -178,8 +178,25 @@
 				</DataGrid.Columns>
 			</DataGrid>
 		</DockPanel>
-		<!--<Expander Grid.Row="2" Grid.Column="1" ExpandDirection="Left">
-			<Label>Label</Label>
-		</Expander>-->
+		<Expander Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"
+				  ExpandDirection="Left"
+				  Header="Pairings" Margin="5"
+				  BorderBrush="Green">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="auto"/>
+					<RowDefinition/>
+				</Grid.RowDefinitions>
+				<Label Margin="0 20 0 20" Grid.Row="0" HorizontalAlignment="Center">Pairings</Label>
+				<DataGrid Grid.Row="1" Margin="10 10 10 5">
+					<DataGrid.Columns>
+						<DataGridTextColumn Header="№"/>
+						<DataGridTextColumn Header="Player 1"/>
+						<DataGridTextColumn Header="Result"/>
+						<DataGridTextColumn Header="Player 2"/>
+					</DataGrid.Columns>
+				</DataGrid>
+			</Grid>
+		</Expander>
 	</Grid>
 </Window>
