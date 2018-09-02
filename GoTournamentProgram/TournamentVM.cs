@@ -16,6 +16,7 @@ namespace GoTournamentProgram
     {
         private IDialogService dialogService;
         private IFileService fileService;
+        private IEnvironmentService environmentService;
 
         readonly TournamentModel _model = new TournamentModel();
 
@@ -57,11 +58,13 @@ namespace GoTournamentProgram
         public List<string> AllPlayers => _model.AllPlayers;
         //
 
-        public TournamentVM(IDialogService dialogService, IFileService fileService)
+        public TournamentVM(IDialogService dialogService, 
+            IFileService fileService, IEnvironmentService environmentService)
         {
 
             this.dialogService = dialogService;
             this.fileService = fileService;
+            this.environmentService = environmentService;
 
             // пробрасываем изменившиеся свойства модели во View
             _model.PropertyChanged += (sender, e) => { RaisePropertyChanged(e.PropertyName); };
@@ -100,6 +103,16 @@ namespace GoTournamentProgram
                     _model.AddPlayer(name);
                 }
             });
+
+
+            // Открытие файла при запуске
+            List<string> args = this.environmentService.GetCommandLineArguments().ToList();
+            try
+            {
+                TournamentModel newTournament = fileService.Open(args[1]);
+                _model.Update(newTournament);
+            }
+            catch { }
         }
 
         public DelegateCommand<string> AddPlayer { get; }
@@ -117,7 +130,7 @@ namespace GoTournamentProgram
         public DelegateCommand<string> AddPlayerByKey { get; }
 
         //
-
+        
         private void OpenCommand()
         {
             try
@@ -139,7 +152,7 @@ namespace GoTournamentProgram
         {
             try
             {
-                if (dialogService.SaveFileDialog($"{Name}.json") == true)
+                if (dialogService.SaveFileDialog($"{Name}.trn") == true)
                 {
                     fileService.Save(dialogService.FilePath, _model);
                     dialogService.ShowMessage("File saved");
