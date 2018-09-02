@@ -25,21 +25,8 @@ namespace GoTournamentProgram
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext =
-                new TournamentVM(new DefaultDialogService(), new JsonFileService());
-        }
-
-        private void PlayerName_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                this.Title = "xxx";
-                RoutedEventArgs ev = new RoutedEventArgs();
-                ev.RoutedEvent = Button.ClickEvent;
-                this.AddPlayerBtn.RaiseEvent(ev);
-                //this.AddPlayerBtn.
-                
-            }
+            this.DataContext = new TournamentVM(
+                new DefaultDialogService(), new JsonFileService(), new EnvironmentService());
         }
     }
 }
