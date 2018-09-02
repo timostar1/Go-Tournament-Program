@@ -14,7 +14,7 @@
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>ftp://178.62.24.26:2121/</PublishUrl>
+    <PublishUrl>C:\Users\Work\Desktop\Рабочий стол\goapp\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -27,9 +27,8 @@
     <ProductName>Go Tournament Program</ProductName>
     <PublisherName>MFG</PublisherName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -71,7 +70,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -116,13 +115,15 @@
       <DependentUpon>Installer.cs</DependentUpon>
     </Compile>
     <Compile Include="Services\DefaultDialogService.cs" />
+    <Compile Include="Services\EnvironmentService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Services\IEnvironmentService.cs" />
     <Compile Include="Services\IFileService.cs" />
     <Compile Include="Services\JsonFileService.cs" />
     <Compile Include="Services\Notifier.cs" />
     <Compile Include="TournamentModel.cs" />
     <Compile Include="TournamentVM.cs" />
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -130,10 +131,14 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Styles\Colors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Game.cs" />
@@ -192,6 +197,14 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\minus.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <FileAssociation Include=".trn">
+      <Visible>False</Visible>
+      <Description>Файл турнира</Description>
+      <Progid>Go Tournament Program</Progid>
+      <DefaultIcon>Resources\header.ico</DefaultIcon>
+    </FileAssociation>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

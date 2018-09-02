@@ -13,5 +13,6 @@ namespace GoTournamentProgram
     /// </summary>
     public partial class App : Application
     {
+
     }
 }
