@@ -62,7 +62,7 @@ namespace GoTournamentProgram
         /// <summary>
         /// Список судей турнира
         /// </summary>
-        // TODO: [DataMember]
+        [DataMember]
         public readonly ReadOnlyObservableCollection<Judge> Judges;
 
         /// <summary>
@@ -273,6 +273,12 @@ namespace GoTournamentProgram
             foreach (Player p in model.Players)
             {
                 this.players.Add(p);
+            }
+
+            this.judges.Clear();
+            foreach (Judge j in model.Judges)
+            {
+                this.judges.Add(j);
             }
 
             Name = model.Name;

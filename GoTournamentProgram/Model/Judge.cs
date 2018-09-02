@@ -1,11 +1,13 @@
 ﻿using System;
-
+using System.Runtime.Serialization;
 
 namespace GoTournamentProgram.Model
 {
+    [DataContract]
     public class Judge: Person
     {
         private string qualification;
+        [DataMember]
         public string Qualification
         {
             get { return this.qualification; }
@@ -16,6 +18,7 @@ namespace GoTournamentProgram.Model
             }
         }
         private DateTime workSince;
+        [DataMember]
         public DateTime WorkSince
         {
             get { return this.workSince; }
